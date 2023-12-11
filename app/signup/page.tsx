@@ -1,7 +1,28 @@
 import Link from "next/link";
 import Image from "next/image";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default function SignUp() {
+  async function createUser(formData: FormData) {
+    "use server";
+    const rawFormData = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      pass1: formData.get("pass1"),
+      pass2: formData.get("pass2"),
+    };
+    const cookiesList = cookies();
+    if (cookiesList.has("usersdata")) {
+      var usersdata = cookiesList.get("usersdata");
+      var users = JSON.parse(usersdata.value);
+    } else {
+      var users = {};
+    }
+    users[rawFormData.email] = rawFormData;
+    cookies().set("usersdata", JSON.stringify(users));
+    redirect("/login");
+  }
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
@@ -36,7 +57,7 @@ export default function SignUp() {
               Create an account to use Inconnect and sign away!
             </p>
 
-            <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+            <form action={createUser} className="mt-8 grid grid-cols-6 gap-6">
               <div className="col-span-6">
                 <label
                   htmlFor="Name"
@@ -82,7 +103,7 @@ export default function SignUp() {
                 <input
                   type="password"
                   id="Password"
-                  name="password"
+                  name="pass1"
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                 />
               </div>
@@ -98,7 +119,7 @@ export default function SignUp() {
                 <input
                   type="password"
                   id="PasswordConfirmation"
-                  name="password_confirmation"
+                  name="pass2"
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                 />
               </div>

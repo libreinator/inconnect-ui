@@ -1,10 +1,38 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default function Login() {
+  async function login(formData: FormData) {
+    "use server";
+    const rawFormData = {
+      email: formData.get("email"),
+      pass: formData.get("pass"),
+    };
+    const cookiesList = cookies();
+    if (cookiesList.has("usersdata")) {
+      var usersdata = cookiesList.get("usersdata");
+      console.log(usersdata);
+      var users = JSON.parse(usersdata.value);
+      if (rawFormData.email in users) {
+        var user = users[rawFormData.email];
+        if (rawFormData.pass === user.pass1) {
+          cookies().set("userdata", JSON.stringify(user));
+          redirect("/");
+        } else {
+          redirect("/login");
+        }
+      } else {
+        redirect("/login");
+      }
+    } else {
+      redirect("/login");
+    }
+  }
   return (
     <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-lg text-center">
-        <h1 className="text-2xl font-bold sm:text-3xl">Get started today!</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">{"Login"}</h1>
 
         <p className="mt-4 text-gray-500">
           Inconnect needs to login to view your chats and translate to sign
@@ -12,7 +40,7 @@ export default function Login() {
         </p>
       </div>
 
-      <form action="" className="mx-auto mb-0 mt-8 max-w-md space-y-4">
+      <form action={login} className="mx-auto mb-0 mt-8 max-w-md space-y-4">
         <div>
           <label htmlFor="email" className="sr-only">
             Email
@@ -23,6 +51,7 @@ export default function Login() {
               type="email"
               className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
               placeholder="Enter email"
+              name="email"
             />
 
             <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -54,6 +83,7 @@ export default function Login() {
               type="password"
               className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
               placeholder="Enter password"
+              name="pass"
             />
 
             <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
