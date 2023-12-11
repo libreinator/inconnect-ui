@@ -57,24 +57,44 @@ export default function Home() {
   }
 
   return (
-    <header>
-      <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        <div className="sm:flex sm:items-center sm:justify-between">
-          <div className="text-center sm:text-left">
-            <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-              Welcome, {username}!
-            </h1>
+    <>
+      <header>
+        <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+          <div className="sm:flex sm:items-center sm:justify-between">
+            <div className="text-center sm:text-left">
+              <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+                Welcome, {username}!
+              </h1>
 
-            <p className="mt-1.5 text-sm text-gray-500">
-              {(loggedIn && "") || "Login to access the features"}
-            </p>
-          </div>
+              <p className="mt-1.5 text-sm text-gray-500">
+                {(loggedIn && "") || "Login to access the features"}
+              </p>
+            </div>
 
-          <div className="mt-4 flex flex-col gap-4 sm:mt-0 sm:flex-row sm:items-center">
-            {LoginButton(loggedIn, logout)}
+            <div className="mt-4 flex flex-col gap-4 sm:mt-0 sm:flex-row sm:items-center">
+              {LoginButton(loggedIn, logout)}
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+      <main>
+        <div className="place-content-center self-center flex">
+          <label className="form-control w-full max-w-xs">
+            <div className="label">
+              <span className="label-text">Pick a file</span>
+            </div>
+            <input
+              type="file"
+              capture="user"
+              accept="audio/*"
+              className="file-input file-input-bordered w-full max-w-xs"
+            />
+            <div className="label">
+              <span className="label-text-alt">Audio files</span>
+            </div>
+          </label>
+        </div>
+      </main>
+    </>
   );
 }
