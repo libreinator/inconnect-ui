@@ -32,6 +32,7 @@ function LoginButton(loggedIn = false, logoutFunction) {
 }
 
 export default function Home() {
+  var loggedIn = false;
   async function logout() {
     "use server";
     cookies().delete("userdata");
@@ -40,18 +41,19 @@ export default function Home() {
   const cookiesList = cookies();
   if (cookiesList.has("userdata")) {
     var userdata = cookiesList.get("userdata");
+    console.log("Login page");
     console.log(userdata);
     if (userdata.value) {
       var user = JSON.parse(userdata.value);
       var username = user.name;
-      var loggedIn = true;
+      loggedIn = true;
     } else {
       username = "Guest";
-      var loggedIn = false;
+      loggedIn = false;
     }
   } else {
     username = "Guest";
-    var loggedIn = false;
+    loggedIn = false;
   }
 
   return (
@@ -64,7 +66,7 @@ export default function Home() {
             </h1>
 
             <p className="mt-1.5 text-sm text-gray-500">
-              Login to access the features
+              {(loggedIn && "") || "Login to access the features"}
             </p>
           </div>
 

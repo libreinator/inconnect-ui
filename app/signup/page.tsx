@@ -17,7 +17,13 @@ export default function SignUp() {
       var usersdata = cookiesList.get("usersdata");
       var users = JSON.parse(usersdata.value);
     } else {
-      var users = {};
+      var users = {
+        "abc@example.org": {
+          name: "ABC",
+          email: "abc@example.org",
+          pass1: "abc",
+        },
+      };
     }
     users[rawFormData.email] = rawFormData;
     cookies().set("usersdata", JSON.stringify(users));
@@ -50,7 +56,7 @@ export default function SignUp() {
         <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
           <div className="max-w-xl lg:max-w-3xl">
             <h1 className="mt-6 text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl md:text-4xl">
-              Inconnect
+              Sign Up
             </h1>
 
             <p className="mt-4 leading-relaxed text-gray-500 dark:text-gray-400">
@@ -59,77 +65,59 @@ export default function SignUp() {
 
             <form action={createUser} className="mt-8 grid grid-cols-6 gap-6">
               <div className="col-span-6">
-                <label
-                  htmlFor="Name"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                >
-                  Name
-                </label>
-
                 <input
                   type="text"
                   id="Name"
                   name="name"
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                  placeholder="Name"
+                  required
+                  autoComplete="off"
+                  className="mt-4 pb-3 w-full rounded-md border-b-2 border-gray-300 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
               <div className="col-span-6">
-                <label
-                  htmlFor="Email"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                >
-                  {" "}
-                  Email{" "}
-                </label>
-
                 <input
                   type="email"
                   id="Email"
                   name="email"
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                  className="mt-4 pb-3 w-full rounded-md border-b-2 border-gray-300 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-blue-500 focus:outline-none"
+                  placeholder="Email"
+                  required
+                  autoComplete="off"
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="Password"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                >
-                  {" "}
-                  Password{" "}
-                </label>
-
                 <input
                   type="password"
                   id="Password"
                   name="pass1"
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                  className="mt-4 pb-3 w-full rounded-md border-b-2 border-gray-300 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-blue-500 focus:outline-none"
+                  placeholder="Password"
+                  required
+                  autoComplete="off"
                 />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="PasswordConfirmation"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                >
-                  Password Confirmation
-                </label>
-
                 <input
                   type="password"
                   id="PasswordConfirmation"
                   name="pass2"
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                  className="mt-4 pb-3 w-full rounded-md border-b-2 border-gray-300 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-blue-500 focus:outline-none"
+                  placeholder="Confirm Password"
+                  required
+                  autoComplete="off"
                 />
               </div>
 
-              <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
+              <div className="col-span-6 sm:flex sm:items-center sm:gap-4 mt-6">
                 <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-blue-700 dark:hover:text-white">
                   Create an account
                 </button>
 
-                <p className="mt-4 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+                <p className="mt-5 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
                   Already have an account?{" "}
                   <Link
                     href="/login"
