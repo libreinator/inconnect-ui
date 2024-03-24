@@ -1,0 +1,179 @@
+:root {
+    --primary: #e4e8ed;
+    --secondary: #191919;
+    --alternate: #9db2ea;
+}
+
+@font-face {
+    font-family: "Primary";
+    src: url("../../fonts/PPMori-Regular.woff2") format("woff2");
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+html {
+    font-size: max(100vw / 1920 * 10);
+}
+
+body {
+    font-family: "Primary";
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+h2 {
+    font-size: 10rem;
+}
+
+h3 {
+    font-size: 8rem;
+}
+
+h4 {
+    font-size: 4rem;
+}
+
+li,
+span {
+    font-size: 2.4rem;
+    line-height: 1.2;
+}
+
+.Lander {
+    position: relative;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 1fr;
+    gap: 1rem 0;
+}
+
+.nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 40;
+    background-color: rgb(236, 244, 255);
+}
+
+.nav_wrapper {
+    grid-template-areas: "a a b b b b . . . c d d";
+    padding: 2rem;
+}
+
+.nav_logo {
+    grid-area: a;
+}
+
+.nav_pages {
+    grid-area: b;
+    display: inline-flex;
+    gap: 2rem;
+}
+
+.nav_pages span a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.nav_menu {
+    grid-area: c;
+}
+
+.nav_menu_button {
+    cursor: pointer;
+}
+
+.nav_menu_line {
+    display: block;
+    width: 6.4rem;
+    height: 0.2rem;
+    background-color: var(--secondary);
+    margin: 1rem 0;
+    cursor: pointer;
+}
+
+.section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    z-index: 10;
+}
+
+.section_wrapper {
+    display: flex;
+    height: inherit;
+}
+
+.section_title {
+    position: absolute;
+    top: 16rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    overflow: hidden;
+}
+
+.section_title h2,
+.section_title span {
+    display: inline-flex;
+    font-size: 10rem;
+}
+
+.section_col {
+    position: relative;
+    flex: 1;
+    height: inherit;
+    overflow: hidden;
+}
+
+.section_col_overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary);
+    z-index: 10;
+}
+
+.section_col_image {
+    position: relative;
+    width: 100%;
+    height: 808px;
+    object-fit: cover;
+}
+
+.section_col:nth-child(2) {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.section_col_left {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 18rem;
+    padding: 2rem;
+}
+
+.section_col_left_text h4,
+.section_col_left_text span {
+    font-size: 4rem;
+}
+
+.section_col_left_cta {
+    display: inline-flex;
+    gap: 1.6rem;
+    cursor: pointer;
+}
+
+.section_col_right {
+    flex: 1;
+    padding: 2rem;
+}
