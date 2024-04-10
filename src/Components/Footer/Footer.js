@@ -18,7 +18,7 @@ function Footer() {
                     duration: 0.8,
                 }}
             >
-                &copy; Neural Harbour AI
+                Speech to Sign Language, Main Project
             </motion.span>
             <motion.div className="footer__social__icons"
                 variants={footerTextAnimation}
@@ -29,10 +29,7 @@ function Footer() {
                     duration: 0.8,
                 }}
             >
-                <BsFacebook />
-                <BsTwitter />
-                <BsYoutube />
-                <BsBehance />
+
             </motion.div>
         </Foot>
     )
