@@ -20,6 +20,16 @@ import { db, storage } from "../firebase";
 import { v4 as uuid } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
+function swapHalves(input) {
+  // Split the input string into two equal halves
+  const midpoint = input.length / 2;
+  const firstHalf = input.slice(0, midpoint);
+  const secondHalf = input.slice(midpoint);
+
+  // Swap the two halves and return the result
+  return secondHalf + firstHalf;
+}
+
 const Input = () => {
   const wavesurferRef = useRef(null);
   const [audioSrc, setAudioSrc] = useState(null);
@@ -136,15 +146,47 @@ const Input = () => {
         await uploadBytes(storageRef, audio);
 
         const downloadURL = await getDownloadURL(storageRef);
+
+        await fetch("http://localhost:5000/speechurl", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          redirect: "follow", // manual, *follow, error
+          referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify([downloadURL]), // body data type must match "Content-Type" header
+        });
+        const res = await fetch("http://localhost:5000/video");
+        console.log("uploading video");
+        const videoStorageRef = ref(storage, uuid());
+        console.log(res);
+        const blob = await res.blob();
+        await uploadBytes(videoStorageRef, blob);
+        console.log(blob);
+        console.log("done");
+        console.log("video");
+        const videoURL = await getDownloadURL(videoStorageRef);
+
         await updateDoc(doc(db, "chats", data.chatId), {
           messages: arrayUnion({
             id: uuid(),
             senderId: currentUser.uid,
             date: Timestamp.now(),
             audio: downloadURL,
+            video: videoURL,
           }),
         });
-        console.log(downloadURL);
+        console.log(swapHalves(data.chatId));
+        await updateDoc(doc(db, "chats", swapHalves(data.chatId)), {
+          messages: arrayUnion({
+            id: uuid(),
+            senderId: currentUser.uid,
+            date: Timestamp.now(),
+            audio: downloadURL,
+            video: videoURL,
+          }),
+        });
 
         setAudio(null);
         setAudioSrc(null);
@@ -159,23 +201,6 @@ const Input = () => {
           updateDoc(doc(db, "userChats", currentUser.uid), userChatsUpdates),
           updateDoc(doc(db, "userChats", data.user.uid), userChatsUpdates),
         ]);
-        fetch("http://localhost:5000/speechurl", {
-          method: "POST",
-          mode: "cors", // no-cors, *cors, same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            "Content-Type": "application/json",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          redirect: "follow", // manual, *follow, error
-          referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-          body: JSON.stringify([downloadURL]), // body data type must match "Content-Type" header
-        })
-          .then((res) => res.json())
-          .then((data) => console.log(data))
-          .catch((err) => console.error(err))
-          .then(() => window.open("http://localhost:5000/video"));
       } catch (error) {
         console.error("Error uploading audio:", error);
       }
